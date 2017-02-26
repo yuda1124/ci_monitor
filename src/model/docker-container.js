@@ -1,4 +1,4 @@
-function dockerContainer(id, name, image, ports, created, status) {
+function DockerContainer(id, name, image, ports, created, status) {
   this.id = id;
   this.name = name;
   this.image = image;
@@ -7,3 +7,5 @@ function dockerContainer(id, name, image, ports, created, status) {
   this.status = status;
   // this.usage = usage;
 }
+
+module.exports = DockerContainer;
