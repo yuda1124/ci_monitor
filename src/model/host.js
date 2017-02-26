@@ -1,5 +1,4 @@
-function host(name, osVersion, kernelVersion, cpuinfo) {
-  this.name = name;
+function host(osVersion, kernelVersion, cpuinfo) {
   this.osVersion = osVersion;
   this.kernelVersion = kernelVersion;
   this.cpuinfo = cpuinfo;
