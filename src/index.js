@@ -8,8 +8,8 @@
 // Network.send(info);
 
 // check docker service active or not.
-
-
+const config_host = require('../config_host.json');
+const config_docker = require('../config_docker.json');
 const CollectManager = require('./manager/collect-manager');
 const NetworkManager = require('./manager/network-manager');
 
@@ -19,7 +19,7 @@ const networkManager = new NetworkManager();
 collectManager.collect();
 
 const hostData = collectManager.getHostData();
-networkManager.post(hostData);
+networkManager.post(config_host, hostData);
 
 const dockerData = collectManager.getDockerData();
-networkManager.post(dockerData);
+networkManager.post(config_docker, dockerData);

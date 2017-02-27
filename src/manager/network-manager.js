@@ -1,11 +1,8 @@
 const http = require('http');
-const config = require('../../config.json');
 
-function NetworkManager() {
+function NetworkManager() {}
 
-}
-
-NetworkManager.prototype.post = function (data) {
+NetworkManager.prototype.post = function (config, data) {
   // An object of options to indicate where to post to
   const options = {
     host: config.address,
