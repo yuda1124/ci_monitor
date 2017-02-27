@@ -18,6 +18,10 @@ DockerContainerCollector.prototype.collectContainerInfo = function() {
   const format = fields.reduce(function (prev, cur){
     return prev + separator + cur;
   });
+
+  // TODO : duplicate code with linux-info-DockerContainerCollector
+  this.host_ip = exec('ifconfig ens160 | grep \'inet \' | awk \'{ print $2}\'').toString().trim(); // TODO: handling exception.
+
   // TODO : separate function.
   // getContainerList(which container do we monitor?) and getInformation(getInformation of specific container).
   const buf = exec('docker ps -a --format ' + format); // TODO: handling exception.
@@ -26,7 +30,7 @@ DockerContainerCollector.prototype.collectContainerInfo = function() {
   const containers = rows.map(function(value) {
     const columns = value.split(separator);
     if (columns.length !== fields.length) return null;
-    return new DockerContainer(...columns); // TODO: check backward compatibility
+    return new DockerContainer(this.host_ip, ...columns); // TODO: check backward compatibility
   });
   this.containerList = containers.filter(function (value){ return value !== null; });
 }
