@@ -54,6 +54,7 @@ DockerContainerCollector.prototype.getContainerStats = function() {
   stats.map(function (stat){
     const status = stat.split(separator);
     if (status.length !== fields.length) return;
+    // exec('docker exec ' + status[0] + ' df | grep -v overlay')
     self.assignUsage(status);
   });
 }
