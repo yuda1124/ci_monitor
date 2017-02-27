@@ -1,4 +1,5 @@
-function host(osVersion, kernelVersion, cpuinfo) {
+function host(ipAddress, osVersion, kernelVersion, cpuinfo) {
+  this.ipAddress = ipAddress;
   this.osVersion = osVersion;
   this.kernelVersion = kernelVersion;
   this.cpuinfo = cpuinfo;
