@@ -8,14 +8,14 @@ const fields = [
   '{{.Ports}}',
   '{{.CreatedAt}}',
   '{{.Status}}'];
-const format_ps = fields.reduce(function (prev, cur){
+const format = fields.reduce(function (prev, cur){
   return prev + separator + cur;
 });
 
-function collectDockerInfo() {
+function collectContainerInfo() {
   // TODO : separate function.
   // getContainerList(which container do we monitor?) and getInformation(getInformation of specific container).
-  const buf = exec('docker ps -a --format ' + format_ps); // TODO: handling exception.
+  const buf = exec('docker ps -a --format ' + format); // TODO: handling exception.
   const stdout = buf.toString();
   const rows = stdout.split('\n');
   const containers = rows.map(function(value) {
@@ -26,4 +26,4 @@ function collectDockerInfo() {
   return containers.filter(function (value){ return value !== null; });
 }
 
-module.exports = collectDockerInfo;
+module.exports = collectContainerInfo;
