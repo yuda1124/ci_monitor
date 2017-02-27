@@ -21,7 +21,7 @@ CollectManager.prototype.collect = function() {
 }
 
 CollectManager.prototype.getData = function() {
-  return this.data;
+  return JSON.stringify(this.data);
 }
 
 module.exports = CollectManager;
