@@ -17,6 +17,9 @@ const collectManager = new CollectManager();
 const networkManager = new NetworkManager();
 
 collectManager.collect();
-const data = collectManager.getData();
 
-networkManager.post(data);
+const hostData = collectManager.getHostData();
+networkManager.post(hostData);
+
+const dockerData = collectManager.getDockerData();
+networkManager.post(dockerData);

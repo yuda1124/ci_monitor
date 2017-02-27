@@ -26,7 +26,15 @@ NetworkManager.prototype.post = function (data) {
   });
 
   // post the data
-  req.write(data);
+  if (Array.isArray(data)) {
+    data.map(function(value) {
+      console.log(data);
+      req.write(data);
+    });
+  } else {
+    console.log(data);
+    req.write(data);
+  }
   req.end();
   // console.log(data);
   // console.log(req);
