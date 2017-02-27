@@ -12,7 +12,9 @@ const format_ps = fields.reduce(function (prev, cur){
   return prev + separator + cur;
 });
 
-function getContainerList() {
+function collectDockerInfo() {
+  // TODO : separate function.
+  // getContainerList(which container do we monitor?) and getInformation(getInformation of specific container).
   const buf = exec('docker ps -a --format ' + format_ps); // TODO: handling exception.
   const stdout = buf.toString();
   const rows = stdout.split('\n');
@@ -24,4 +26,4 @@ function getContainerList() {
   return containers.filter(function (value){ return value !== null; });
 }
 
-const result = getContainerList();
+module.exports = collectDockerInfo;
