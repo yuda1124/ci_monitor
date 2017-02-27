@@ -4,10 +4,9 @@ const separator = ':------------:';
 
 function DockerContainerCollector(inspectList) {
   // TODO (TBD) : inspectList contain docker container id or name which will be inspected.
+  this.containerList = null;
   this.collectContainerInfo();
   this.getContainerStats();
-  console.log(this.containerList);
-  console.log(this.stats);
 }
 
 DockerContainerCollector.prototype.collectContainerInfo = function() {
@@ -35,10 +34,11 @@ DockerContainerCollector.prototype.collectContainerInfo = function() {
 }
 
 DockerContainerCollector.prototype.getContainerStats = function() {
+  // The order of fileds array is used in assignUsage function.
   const fields = [
     // '{{.ID}}',
-    '{{.Name}}',
     // '{{.PIDs}}',
+    '{{.Name}}',
     '{{.CPUPerc}}',
     '{{.MemUsage}}',
     '{{.MemPerc}}',
@@ -50,16 +50,38 @@ DockerContainerCollector.prototype.getContainerStats = function() {
   const buf = exec('docker stats --no-stream --format ' + format);
   const stdout = buf.toString();
   const stats = stdout.split('\n');
+  const self = this;
   stats.map(function (stat){
-    const usage = stat.split(separator);
-    if (usage.length !== fields.length) return;
-    this.assignUsage(usage);
+    const status = stat.split(separator);
+    if (status.length !== fields.length) return;
+    self.assignUsage(status);
   });
 }
 
-DockerContainerCollector.prototype.assignUsage = function() {
+DockerContainerCollector.prototype.assignUsage = function(status) {
+  const usage = {
+    cpu: {
+      perc: status[1]
+    },
+    memory: {
+      perc: status[3],
+      usage: status[2]
+    },
+    network: {
+      io: status[4]
+    },
+    disk: {
+      io: status[5]
+    }
+  };
+  this.containerList.map(function(container){
+    if (container.name !== status[0]) return;
+    container.usage = usage;
+  });
+}
+
+DockerContainerCollector.prototype.getContainerInfo = function() {
+  return JSON.stringify(this.containerList);
 }
 
 module.exports = DockerContainerCollector;
-
-new DockerContainerCollector();
