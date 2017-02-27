@@ -5,8 +5,6 @@ const separator = ':------------:';
 function DockerContainerCollector(inspectList) {
   // TODO (TBD) : inspectList contain docker container id or name which will be inspected.
   this.containerList = null;
-  this.collectContainerInfo();
-  this.getContainerStats();
 }
 
 DockerContainerCollector.prototype.collectContainerInfo = function() {
@@ -81,7 +79,7 @@ DockerContainerCollector.prototype.assignUsage = function(status) {
   });
 }
 
-DockerContainerCollector.prototype.getContainerInfo = function() {
+DockerContainerCollector.prototype.getData = function() {
   return JSON.stringify(this.containerList);
 }
 
