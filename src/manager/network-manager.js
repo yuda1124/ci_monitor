@@ -25,8 +25,8 @@ NetworkManager.prototype.post = function (config, data) {
   // post the data
   if (Array.isArray(data)) {
     data.map(function(value) {
-      console.log(data);
-      req.write(data);
+      console.log(value);
+      req.write(value);
     });
   } else {
     console.log(data);
