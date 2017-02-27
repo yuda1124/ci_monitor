@@ -23,15 +23,15 @@ NetworkManager.prototype.post = function (config, data) {
   });
 
   // post the data
-  if (Array.isArray(data)) {
-    data.map(function(value) {
-      console.log(value);
-      req.write(value);
-    });
-  } else {
+  // if (Array.isArray(data)) {
+  //   data.map(function(value) {
+  //     console.log(value);
+  //     req.write(value);
+  //   });
+  // } else {
     console.log(data);
     req.write(data);
-  }
+  // }
   req.end();
   // console.log(data);
   // console.log(req);

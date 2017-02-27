@@ -85,8 +85,8 @@ DockerContainerCollector.prototype.assignUsage = function(status) {
 }
 
 DockerContainerCollector.prototype.getData = function() {
-  // return JSON.stringify(this.containerList);
-  return this.containerList;
+  return JSON.stringify(this.containerList);
+  // return this.containerList;
 }
 
 module.exports = DockerContainerCollector;
