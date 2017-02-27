@@ -26,10 +26,10 @@ NetworkManager.prototype.post = function (data) {
   });
 
   // post the data
-  // req.write(data);
-  // req.end();
-  console.log(data);
-  console.log(req);
+  req.write(data);
+  req.end();
+  // console.log(data);
+  // console.log(req);
 }
 
 module.exports = NetworkManager;
