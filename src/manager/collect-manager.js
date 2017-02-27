@@ -26,10 +26,9 @@ CollectManager.prototype.getDockerData = function() {
   // return containerList.map(function(value) {
   //   return JSON.stringify(value);
   // });
-  const data = {
-    containers: this.dcCollector.getData()
-  };
-  return JSON.stringify(data);
+  const data = this.dcCollector.getData();
+
+  return data;
 }
 
 module.exports = CollectManager;
