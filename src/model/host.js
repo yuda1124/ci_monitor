@@ -5,3 +5,5 @@ function host(osVersion, kernelVersion, cpuinfo) {
 //  this.dockerContainers = dockerContainers;
 //  this.usage = usage;
 }
+
+module.exports = host;
