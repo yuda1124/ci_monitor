@@ -27,10 +27,11 @@ DockerContainerCollector.prototype.collectContainerInfo = function() {
   const buf = exec('docker ps -a --format ' + format); // TODO: handling exception.
   const stdout = buf.toString();
   const rows = stdout.split('\n');
+  const self = this;
   const containers = rows.map(function(value) {
     const columns = value.split(separator);
     if (columns.length !== fields.length) return null;
-    return new DockerContainer(this.host_ip, ...columns); // TODO: check backward compatibility
+    return new DockerContainer(self.host_ip, ...columns); // TODO: check backward compatibility
   });
   this.containerList = containers.filter(function (value){ return value !== null; });
 }
