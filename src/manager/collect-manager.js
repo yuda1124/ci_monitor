@@ -22,10 +22,11 @@ CollectManager.prototype.getHostData = function() {
 }
 
 CollectManager.prototype.getDockerData = function() {
-  const containerList = this.dcCollector.getData();
-  return containerList.map(function(value) {
-    return JSON.stringify(value);
-  });
+  // const containerList = this.dcCollector.getData();
+  // return containerList.map(function(value) {
+  //   return JSON.stringify(value);
+  // });
+  return JSON.stringify(this.dcCollector.getData());
 }
 
 module.exports = CollectManager;
