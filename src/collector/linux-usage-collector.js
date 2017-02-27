@@ -20,11 +20,27 @@ function getMemoryUsage() {
 }
 
 function getDiskUsage() {
-  const stdout = exec('df -hl --total --output=source,pcent | grep "total"').toString(); // TODO: handling exception.
-  const diskUsage = stdout.replace(/\D/g, '');
+  const totalSize = exec('df -l --total --output=source,size | grep "total"').toString().replace(/\D/g, ''); // TODO: handling exception.
+  const totalUsed = exec('df -l --total --output=source,used | grep "total"').toString().replace(/\D/g, ''); // TODO: handling exception.
+  const diskUsage = {
+    size: totalSize,
+    used: totalUsed
+  };
   return diskUsage;
 }
 
-function linuxUsageCollector() {
-
+function getNetworkStat() {
+  const rx = exec('cat /sys/class/net/ens160/statistics/rx_bytes').toString().replace(/\D/g, ''); // TODO: handling exception.
+  const tx = exec('cat /sys/class/net/ens160/statistics/tx_bytes').toString().replace(/\D/g, ''); // TODO: handling exception.
+  const networkStat = {
+    rx: rx,
+    tx: tx
+  };
+  return networkStat;
 }
+
+function linuxUsageCollector() {
+  this.usage = new Usage(getCPUUsage(), getMemoryUsage(), getDiskUsage(), getNetworkStat());
+}
+
+module.exports = linuxUsageCollector;
