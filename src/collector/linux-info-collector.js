@@ -3,7 +3,9 @@ const network_card = require('../../config_network_card.json').name;
 const Host = require('../model/host');
 
 function getHostIP() {
-  return exec('ifconfig ' + network_card + ' | grep \'inet \' | awk \'{ print $2}\'').toString().trim(); // TODO: handling exception.
+  const stdout = exec('ifconfig ' + network_card + ' | grep \'inet \' | awk \'{ print $2}\'').toString().trim(); // TODO: handling exception.
+  const ip = stdout.replace('addr:','');
+  return ip;
 }
 
 function getHostOSVersion() {
