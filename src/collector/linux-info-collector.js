@@ -6,7 +6,7 @@ function getHostIP() {
 }
 
 function getHostOSVersion() {
-  return exec('cat /etc/redhat-release').toString().trim(); // TODO: handling exception.
+  return exec('cat /etc/system-release').toString().trim(); // TODO: handling exception.
 }
 
 function getKernelVersion() {
