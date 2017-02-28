@@ -78,12 +78,24 @@ DockerContainerCollector.prototype.getAMIContainerStats = function() {
   const stdout = buf.toString();
   const stats = stdout.split('\n');
   const self = this;
-  stats.map(function(stat) {
-    const status = stat.split(' ');
-    console.log(status);
-    // if (status.length !== fields.length) return;
+  stats.map(function(stat, index) {
+    if (index === 0) return null; // ignore label
+    const splitted = stat.split(' ');
+    const strList = splitted.filter(function (str) {
+      return str.length > 0;
+    });
+    // console.log(strList);
+    const status = [];
+    status.push(strList[0]);
+    status.push(strList[1]);
+    status.push(strList[2] + ' ' + strList[3] + ' ' + strList[4] + ' ' + strList[5] + ' ' + strList[6]);
+    status.push(strList[7]);
+    status.push(strList[8] + ' ' + strList[9] + ' ' + strList[10] + ' ' + strList[11] + ' ' + strList[12]);
+    status.push(strList[13] + ' ' + strList[14] + ' ' + strList[15] + ' ' + strList[16] + ' ' + strList[17]);
+    // console.log(status);
+
     // exec('docker exec ' + status[0] + ' df | grep -v overlay')
-    // self.assignUsage(status);
+    self.assignUsage(status);
   });
 }
 
@@ -104,7 +116,7 @@ DockerContainerCollector.prototype.assignUsage = function(status) {
     }
   };
   this.containerList.map(function(container){
-    if (container.name !== status[0]) return;
+    if ((container.name !== status[0]) || container.id !== status[0]) return;
     container.usage = usage;
   });
 }
