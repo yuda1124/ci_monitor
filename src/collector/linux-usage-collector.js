@@ -1,4 +1,5 @@
 const exec = require('child_process').execSync;
+const network_card = require('../../config_network_card.json').name;
 const Usage = require('../model/usage');
 
 function getCPUUsage() {
@@ -30,9 +31,9 @@ function getDiskUsage() {
 }
 
 function getNetworkStat() {
-  const networkName = 'ens160'; // if you have another network name, change this.
-  const rxGetCommand = 'cat /sys/class/net/' + networkName + '/statistics/rx_bytes';
-  const txGetCommand = 'cat /sys/class/net/' + networkName + '/statistics/tx_bytes';
+  // const networkName = 'ens160'; // if you have another network name, change this.
+  const rxGetCommand = 'cat /sys/class/net/' + network_card + '/statistics/rx_bytes';
+  const txGetCommand = 'cat /sys/class/net/' + network_card + '/statistics/tx_bytes';
   const rx = exec(rxGetCommand).toString().replace(/\D/g, ''); // TODO: handling exception.
   const tx = exec(txGetCommand).toString().replace(/\D/g, ''); // TODO: handling exception.
   const networkStat = {

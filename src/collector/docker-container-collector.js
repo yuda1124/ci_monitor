@@ -1,4 +1,5 @@
 const exec = require('child_process').execSync;
+const network_card = require('../../config_network_card.json').name;
 const DockerContainer = require('../model/docker-container');
 const separator = ':------------:';
 
@@ -20,7 +21,7 @@ DockerContainerCollector.prototype.collectContainerInfo = function() {
   });
 
   // TODO : duplicate code with linux-info-DockerContainerCollector
-  this.host_ip = exec('ifconfig ens160 | grep \'inet \' | awk \'{ print $2}\'').toString().trim(); // TODO: handling exception.
+  this.host_ip = exec('ifconfig ' + network_card + ' | grep \'inet \' | awk \'{ print $2}\'').toString().trim(); // TODO: handling exception.
 
   // TODO : separate function.
   // getContainerList(which container do we monitor?) and getInformation(getInformation of specific container).
