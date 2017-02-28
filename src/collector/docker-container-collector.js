@@ -116,7 +116,7 @@ DockerContainerCollector.prototype.assignUsage = function(status) {
     }
   };
   this.containerList.map(function(container){
-    if ((container.name !== status[0]) || container.id !== status[0]) return;
+    if ((container.name !== status[0]) && container.id !== status[0]) return;
     container.usage = usage;
   });
 }
