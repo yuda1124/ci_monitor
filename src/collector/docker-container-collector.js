@@ -38,6 +38,16 @@ DockerContainerCollector.prototype.collectContainerInfo = function() {
 }
 
 DockerContainerCollector.prototype.getContainerStats = function() {
+  const buf = exec('cat /etc/system-release');
+  const stdout = buf.toString();
+  if (stdout.indexOf('Amazon') === 0) {
+    this.getAMIContainerStats();
+    return;
+  }
+  this.getCentContainerStats();
+}
+
+DockerContainerCollector.prototype.getCentContainerStats = function() {
   // The order of fileds array is used in assignUsage function.
   const fields = [
     // '{{.ID}}',
@@ -55,11 +65,25 @@ DockerContainerCollector.prototype.getContainerStats = function() {
   const stdout = buf.toString();
   const stats = stdout.split('\n');
   const self = this;
-  stats.map(function (stat){
+  stats.map(function(stat) {
     const status = stat.split(separator);
     if (status.length !== fields.length) return;
     // exec('docker exec ' + status[0] + ' df | grep -v overlay')
     self.assignUsage(status);
+  });
+}
+
+DockerContainerCollector.prototype.getAMIContainerStats = function() {
+  const buf = exec('docker stats --no-stream');
+  const stdout = buf.toString();
+  const stats = stdout.split('\n');
+  const self = this;
+  stats.map(function(stat) {
+    const status = stat.split(' ');
+    console.log(status);
+    // if (status.length !== fields.length) return;
+    // exec('docker exec ' + status[0] + ' df | grep -v overlay')
+    // self.assignUsage(status);
   });
 }
 
