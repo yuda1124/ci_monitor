@@ -30,8 +30,11 @@ function getDiskUsage() {
 }
 
 function getNetworkStat() {
-  const rx = exec('cat /sys/class/net/ens160/statistics/rx_bytes').toString().replace(/\D/g, ''); // TODO: handling exception.
-  const tx = exec('cat /sys/class/net/ens160/statistics/tx_bytes').toString().replace(/\D/g, ''); // TODO: handling exception.
+  const networkName = 'ens160'; // if you have another network name, change this.
+  const rxGetCommand = 'cat /sys/class/net/' + networkName + '/statistics/rx_bytes';
+  const txGetCommand = 'cat /sys/class/net/' + networkName + '/statistics/tx_bytes';
+  const rx = exec(rxGetCommand).toString().replace(/\D/g, ''); // TODO: handling exception.
+  const tx = exec(txGetCommand).toString().replace(/\D/g, ''); // TODO: handling exception.
   const networkStat = {
     rx: rx,
     tx: tx
