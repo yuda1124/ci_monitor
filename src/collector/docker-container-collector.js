@@ -32,7 +32,7 @@ DockerContainerCollector.prototype.collectContainerInfo = function() {
   const containers = rows.map(function(value) {
     var columns = value.split(separator);
     if (columns.length !== fields.length) return null;
-    if (columns[1] === 'docker_ws_1' || columns[1] === 'docker_wuf_1') columns[2] = self.checkVersion(columns[1], columns[2]);
+    if (columns[1] === 'docker_ws_1' || columns[1] === 'docker_wuf_1' || columns[1] === 'docker_mhp_1') columns[2] = self.checkVersion(columns[1], columns[2]);
     return new DockerContainer(self.host_ip, ...columns); // TODO: check backward compatibility
   });
   this.containerList = containers.filter(function (value){ return value !== null; });
@@ -46,6 +46,7 @@ DockerContainerCollector.prototype.checkVersion = function(name, image) { // TOD
   if (version === 'latest') {
     var newVersion;
     if (name === 'docker_ws_1') newVersion = exec('docker exec docker_ws_1 cat \/apps\/VERSION').toString();
+    else if (name === 'docker_mhp_1') newVersion = exec('docker exec docker_mhp_1 cat \/apps\/VERSION').toString();
     else {
       newVersion = exec('docker exec docker_wuf_1 cat \/opt\/wuf\/VERSION');
       nweVersion = newVersion.toString();
