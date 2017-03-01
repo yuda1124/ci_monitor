@@ -33,9 +33,9 @@ DockerContainerCollector.prototype.collectContainerInfo = function() {
     var columns = value.split(separator);
     if (columns.length !== fields.length) return null;
     if (columns[5].substr(0,4) !== 'Exit' &&
-      columns[1] === 'docker_ws_1' ||
-      columns[1] === 'docker_wuf_1' ||
-      columns[1] === 'docker_mhp_1')
+      (columns[1] === 'docker_ws_1' ||
+       columns[1] === 'docker_wuf_1' ||
+       columns[1] === 'docker_mhp_1'))
       columns[2] = self.checkVersion(columns[1], columns[2]);
     return new DockerContainer(self.host_ip, ...columns); // TODO: check backward compatibility
   });
