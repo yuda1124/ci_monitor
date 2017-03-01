@@ -39,18 +39,20 @@ DockerContainerCollector.prototype.collectContainerInfo = function() {
 }
 
 DockerContainerCollector.prototype.checkVersion = function(name, image) { // TODO: refactoring! this function is just temporary function.
-  if(!exec('docker exec docker_wuf_1 find \/ -name VERSION')) return;
+  const findCommand = 'docker exec ' + name + ' find / -name VERSION';
+  const output = exec(findCommand).toString();
+  if(output === '') return image;
   var input = image;
   const nameToken = input.split(':');
   const versionIndex = nameToken.length - 1;
   const version = nameToken[versionIndex];
   if (version === 'latest') {
     var newVersion;
-    if (name === 'docker_ws_1') newVersion = exec('docker exec docker_ws_1 cat \/apps\/VERSION').toString();
-    else if (name === 'docker_mhp_1') newVersion = exec('docker exec docker_mhp_1 cat \/apps\/VERSION').toString();
+    if (name === 'docker_ws_1') newVersion = exec('docker exec docker_ws_1 cat \/apps\/VERSION').toString().trim();
+    else if (name === 'docker_mhp_1') newVersion = exec('docker exec docker_mhp_1 cat \/apps\/VERSION').toString().trim();
     else {
       newVersion = exec('docker exec docker_wuf_1 cat \/opt\/wuf\/VERSION');
-      newVersion = newVersion.toString();
+      newVersion = newVersion.toString().trim();
     }
     input = input.replace(version, newVersion);
   }
