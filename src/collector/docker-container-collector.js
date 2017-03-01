@@ -30,11 +30,29 @@ DockerContainerCollector.prototype.collectContainerInfo = function() {
   const rows = stdout.split('\n');
   const self = this;
   const containers = rows.map(function(value) {
-    const columns = value.split(separator);
+    var columns = value.split(separator);
     if (columns.length !== fields.length) return null;
+    if (columns[1] === 'docker_ws_1' || columns[1] === 'docker_wuf_1') columns[2] = self.checkVersion(columns[1], columns[2]);
     return new DockerContainer(self.host_ip, ...columns); // TODO: check backward compatibility
   });
   this.containerList = containers.filter(function (value){ return value !== null; });
+}
+
+DockerContainerCollector.prototype.checkVersion = function(name, image) { // TODO: refactoring! this function is just temporary function.
+  var input = image;
+  const nameToken = input.split(':');
+  const versionIndex = nameToken.length - 1;
+  const version = nameToken[versionIndex];
+  if (version === 'latest') {
+    var newVersion;
+    if (name === 'docker_ws_1') newVersion = exec('docker exec docker_ws_1 cat \/apps\/VERSION').toString();
+    else {
+      newVersion = exec('docker exec docker_wuf_1 cat \/opt\/wuf\/VERSION');
+      nweVersion = newVersion.toString();
+    }
+    input = input.replace(version, newVersion);
+  }
+  return input;
 }
 
 DockerContainerCollector.prototype.getContainerStats = function() {
