@@ -13,13 +13,15 @@ const config_docker = require('../config_docker.json');
 const CollectManager = require('./manager/collect-manager');
 const NetworkManager = require('./manager/network-manager');
 
-const collectManager = new CollectManager();
-const networkManager = new NetworkManager();
+var interval = setInterval(function() {
+  const collectManager = new CollectManager();
+  const networkManager = new NetworkManager();
 
-collectManager.collect();
+  collectManager.collect();
 
-const hostData = collectManager.getHostData();
-networkManager.post(config_host, hostData);
+  const hostData = collectManager.getHostData();
+  networkManager.post(config_host, hostData);
 
-const dockerData = collectManager.getDockerData();
-networkManager.post(config_docker, dockerData);
+  const dockerData = collectManager.getDockerData();
+  networkManager.post(config_docker, dockerData);
+}, 10000);
