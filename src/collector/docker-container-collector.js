@@ -44,8 +44,16 @@ DockerContainerCollector.prototype.collectContainerInfo = function() {
 
 DockerContainerCollector.prototype.checkVersion = function(name, image) { // TODO: refactoring! this function is just temporary function.
   const findVersion = 'docker exec ' + name + ' find / -name VERSION';
-  const path = exec(findVersion).toString();
-  if(path === '') return image;
+  var path = null;
+  try {
+    path = exec(findVersion).toString();
+  } catch (err) {
+    path = null;
+  }
+  // if docker container is exited then path is null
+  // else if docker contianer doesnt have VERSION file then path is ''
+  // Otherwise, path is the actual path of VERSION file.
+  if (path === null || path === '') return image;
   const nameToken = image.split(':');
   const versionIndex = nameToken.length - 1;
   const version = nameToken[versionIndex];
